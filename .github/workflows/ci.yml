@@ -1,0 +1,28 @@
+name: Data Quality Checks for People Data Lake
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: کد را دریافت کن
+        uses: actions/checkout@v4
+
+      - name: Python را نصب کن
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: وابستگی‌ها را نصب کن
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: تست‌ها را اجرا کن
+        run: pytest tests/ -v
+
+      - name: کنترل‌های کیفیت را اجرا کن
+        run: python -m qa.run_all_checks

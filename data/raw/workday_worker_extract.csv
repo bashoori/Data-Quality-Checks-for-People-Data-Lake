@@ -1,0 +1,11 @@
+worker_id,worker_status,effective_date,end_date,job_code,manager_id,location,hire_date,work_email,sin_masked
+W1001,Active,2024-01-01,9999-12-31,J200,,Vancouver,2019-03-15,a.chen@example.com,***-***-123
+W1002,Active,2024-01-01,2024-06-30,J150,W1001,Vancouver,2021-07-01,b.patel@example.com,***-***-456
+W1002,Active,2024-07-01,9999-12-31,J180,W1001,Vancouver,2021-07-01,b.patel@example.com,***-***-456
+W1003,Active,2023-05-01,9999-12-31,J150,W9999,North Vancouver,,c.lee@example.com,***-***-789
+W1004,Terminated,2024-03-01,2024-03-01,J120,W1001,Toronto,2020-11-10,d.wong@example.com,123-456-789
+W1005,Active,2024-01-15,2024-12-31,J200,W1001,Vancouver,2022-02-14,e.singh@example.com,***-***-012
+W1005,Active,2024-02-01,9999-12-31,J200,W1001,Vancouver,2022-02-14,e.singh@example.com,***-***-012
+W1006,Active,2024-04-01,2023-12-31,J160,W1001,Calgary,2018-09-01,f.kim@example.com,***-***-345
+W1007,Active,2024-01-01,9999-12-31,,W1002,Vancouver,2023-05-01,g.rossi@example.com,***-***-678
+W1007,Active,2024-01-01,9999-12-31,J170,W1002,Vancouver,2023-05-01,g.rossi@example.com,***-***-678
