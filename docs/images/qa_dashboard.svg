@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="660" viewBox="0 0 1000 660" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="660" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="40" y="45" font-size="28" font-weight="bold" fill="#0f172a">Data Quality Dashboard</text>
+  <text x="40" y="72" font-size="14" fill="#64748b">People Data Lake, Workday extract (synthetic sample data)</text>
+
+  <!-- KPI cards -->
+  <g>
+    <rect x="40" y="90" width="200" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="60" y="125" font-size="14" fill="#64748b">Total checks</text>
+    <text x="60" y="180" font-size="44" font-weight="bold" fill="#0f172a">9</text>
+  </g>
+  <g>
+    <rect x="280" y="90" width="200" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="300" y="125" font-size="14" fill="#64748b">Passed</text>
+    <text x="300" y="180" font-size="44" font-weight="bold" fill="#16a34a">2</text>
+  </g>
+  <g>
+    <rect x="520" y="90" width="200" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="540" y="125" font-size="14" fill="#64748b">Failed</text>
+    <text x="540" y="180" font-size="44" font-weight="bold" fill="#dc2626">7</text>
+  </g>
+  <g>
+    <rect x="760" y="90" width="200" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="780" y="125" font-size="14" fill="#64748b">Total violations</text>
+    <text x="780" y="180" font-size="44" font-weight="bold" fill="#0f172a">7</text>
+  </g>
+
+  <!-- Table header -->
+  <rect x="40" y="240" width="920" height="30" fill="#e2e8f0"/>
+  <text x="60" y="260" font-size="14" font-weight="bold" fill="#334155">Check</text>
+  <text x="595" y="260" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">Status</text>
+  <text x="740" y="260" font-size="14" font-weight="bold" fill="#334155" text-anchor="middle">Violations</text>
+
+  <!-- Row 1 -->
+  <rect x="40" y="270" width="920" height="36" fill="#ffffff"/>
+  <text x="60" y="293" font-size="14" fill="#0f172a">reconciliation_row_count</text>
+  <rect x="560" y="277" width="70" height="22" rx="11" fill="#dcfce7"/>
+  <text x="595" y="292" font-size="12" font-weight="bold" fill="#166534" text-anchor="middle">PASS</text>
+  <text x="740" y="293" font-size="14" fill="#0f172a" text-anchor="middle">0</text>
+
+  <!-- Row 2 -->
+  <rect x="40" y="306" width="920" height="36" fill="#f1f5f9"/>
+  <text x="60" y="329" font-size="14" fill="#0f172a">duplicate_worker_effective_date</text>
+  <rect x="560" y="313" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="328" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="329" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 3 -->
+  <rect x="40" y="342" width="920" height="36" fill="#ffffff"/>
+  <text x="60" y="365" font-size="14" fill="#0f172a">overlapping_effective_periods</text>
+  <rect x="560" y="349" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="364" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="365" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 4 -->
+  <rect x="40" y="378" width="920" height="36" fill="#f1f5f9"/>
+  <text x="60" y="401" font-size="14" fill="#0f172a">end_before_start</text>
+  <rect x="560" y="385" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="400" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="401" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 5 -->
+  <rect x="40" y="414" width="920" height="36" fill="#ffffff"/>
+  <text x="60" y="437" font-size="14" fill="#0f172a">missing_hire_date</text>
+  <rect x="560" y="421" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="436" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="437" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 6 -->
+  <rect x="40" y="450" width="920" height="36" fill="#f1f5f9"/>
+  <text x="60" y="473" font-size="14" fill="#0f172a">missing_job_code</text>
+  <rect x="560" y="457" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="472" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="473" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 7 -->
+  <rect x="40" y="486" width="920" height="36" fill="#ffffff"/>
+  <text x="60" y="509" font-size="14" fill="#0f172a">orphan_manager</text>
+  <rect x="560" y="493" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="508" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="509" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 8 -->
+  <rect x="40" y="522" width="920" height="36" fill="#f1f5f9"/>
+  <text x="60" y="545" font-size="14" fill="#0f172a">sin_not_masked</text>
+  <rect x="560" y="529" width="70" height="22" rx="11" fill="#fee2e2"/>
+  <text x="595" y="544" font-size="12" font-weight="bold" fill="#991b1b" text-anchor="middle">FAIL</text>
+  <text x="740" y="545" font-size="14" fill="#0f172a" text-anchor="middle">1</text>
+
+  <!-- Row 9 -->
+  <rect x="40" y="558" width="920" height="36" fill="#ffffff"/>
+  <text x="60" y="581" font-size="14" fill="#0f172a">gold_one_row_per_worker</text>
+  <rect x="560" y="565" width="70" height="22" rx="11" fill="#dcfce7"/>
+  <text x="595" y="580" font-size="12" font-weight="bold" fill="#166534" text-anchor="middle">PASS</text>
+  <text x="740" y="581" font-size="14" fill="#0f172a" text-anchor="middle">0</text>
+
+  <!-- Footer -->
+  <text x="40" y="625" font-size="12" fill="#64748b">Generated by qa/run_all_checks.py on data/raw/workday_worker_extract.csv</text>
+</svg>

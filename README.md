@@ -89,6 +89,10 @@ pytest tests/ -v
 
 On the sample file, 7 checks FAIL and 2 PASS. Each FAIL matches an intentional defect in `data/raw/workday_worker_extract.csv`. Details are in `data/README.md`.
 
+## Dashboard Preview
+
+![QA results dashboard](docs/images/qa_dashboard.svg)
+
 ## Next Steps
 
 - Power BI dashboard on the CSV results in `qa/results/`
