@@ -1,97 +1,97 @@
 # Data Quality Checks for People Data Lake
 
-چارچوبی برای کنترل کیفیت داده‌های منابع انسانی که از Workday وارد Data Lake می‌شوند. پروژه بررسی می‌کند که داده در مسیر Bronze، Silver و Gold درست، کامل و قابل اعتماد باقی بماند، و نتیجه را به صورت فایل CSV ثبت می‌کند.
+A data quality framework for People (HR) data that flows from Workday into a data lake. The project checks that data stays accurate, complete, and reliable across the Bronze, Silver, and Gold layers, and saves the results as CSV files.
 
-> این پروژه فقط با **داده ساختگی** کار می‌کند. داده واقعی کارکنان را وارد ریپو نکنید.
+> This project works only with **synthetic data**. Do not commit real employee data to the repository.
 
-## چه کاری انجام می‌دهد
+## What It Does
 
-1. فایل خروجی Workday را می‌خواند و در سه لایه بار می‌کند:
-   - **Bronze:** داده خام بدون تغییر
-   - **Silver:** داده با نوع‌های درست (تاریخ و متن)
-   - **Gold:** آخرین وضعیت هر کارمند (یک ردیف برای هر کارمند)
-2. ۹ کنترل کیفیت را روی این لایه‌ها اجرا می‌کند.
-3. نتیجهٔ هر کنترل (PASS یا FAIL) را با تعداد خطاها و نمونه‌ای از ردیف‌های خطادار در `qa/results/` ذخیره می‌کند.
+1. Reads a Workday extract and loads it into three layers:
+   - **Bronze:** raw data, unchanged
+   - **Silver:** typed data (dates and text)
+   - **Gold:** the latest state of each worker (one row per worker)
+2. Runs 9 data quality checks on these layers.
+3. Saves each check result (PASS or FAIL), the number of violations, and sample rows to `qa/results/`.
 
-## کنترل‌ها
+## Checks
 
-| کنترل | چه چیزی را بررسی می‌کند |
+| Check | What it verifies |
 |---|---|
-| `reconciliation_row_count` | تعداد ردیف Bronze و Silver برابر باشد |
-| `duplicate_worker_effective_date` | یک کارمند برای یک تاریخ مؤثر دو بار ثبت نشده باشد |
-| `overlapping_effective_periods` | بازه‌های مؤثر یک کارمند روی هم نیفتند |
-| `end_before_start` | تاریخ پایان قبل از تاریخ شروع نباشد |
-| `missing_hire_date` | تاریخ استخدام خالی نباشد |
-| `missing_job_code` | کد شغل خالی نباشد |
-| `orphan_manager` | مدیر ثبت‌شده در فایل وجود داشته باشد |
-| `sin_not_masked` | شمارهٔ بیمه اجتماعی ماسک شده باشد |
-| `gold_one_row_per_worker` | در لایهٔ Gold هر کارمند فقط یک ردیف داشته باشد |
+| `reconciliation_row_count` | Bronze and Silver have the same number of rows |
+| `duplicate_worker_effective_date` | A worker has no more than one record for the same effective date |
+| `overlapping_effective_periods` | A worker's effective periods do not overlap |
+| `end_before_start` | No end date comes before its start date |
+| `missing_hire_date` | Hire date is not empty |
+| `missing_job_code` | Job code is not empty |
+| `orphan_manager` | Every manager ID exists as a worker in the file |
+| `sin_not_masked` | Social Insurance Numbers are masked as `***-***-NNN` |
+| `gold_one_row_per_worker` | Gold has exactly one row per worker |
 
-## ساختار پوشه‌ها
+## Project Structure
 
 ```
-people-data-lake-qa/
+data-quality-checks-for-people-data-lake/
 ├── data/
-│   ├── raw/                  # داده ساختگی Workday
-│   └── README.md             # خطاهای عمدی داخل داده
+│   ├── raw/                  # Synthetic Workday extract
+│   └── README.md             # Intentional defects in the sample data
 ├── docs/
-│   ├── source_to_target.md   # نگاشت فیلدهای Workday به لایه‌ها
-│   ├── business_rules.md     # قوانین کسب‌وکار و effective dating
-│   ├── qa_playbook.md        # روش تست و راهنمای triage
-│   └── defect_log.md         # ثبت defectها
+│   ├── source_to_target.md   # Field mapping from Workday to each layer
+│   ├── business_rules.md     # Business rules and effective dating
+│   ├── qa_playbook.md        # Test process and triage guide
+│   └── defect_log.md         # Defect tracking
 ├── qa/
-│   ├── checks.py             # تعریف کنترل‌های کیفیت
-│   ├── run_all_checks.py     # نقطهٔ ورود اجرای کنترل‌ها
-│   └── results/              # خروجی‌های CSV (در git نگه داشته نمی‌شوند)
+│   ├── checks.py             # Data quality check definitions
+│   ├── run_all_checks.py     # Entry point to run all checks
+│   └── results/              # CSV output (not tracked by git)
 ├── src/
-│   ├── config.py             # مسیرها و تنظیمات
-│   └── pipeline.py           # ساخت لایه‌های Bronze، Silver و Gold
+│   ├── config.py             # Paths and settings
+│   └── pipeline.py           # Builds the Bronze, Silver, and Gold layers
 ├── tests/
 │   ├── conftest.py
-│   └── test_checks.py        # تست‌های خود کنترل‌ها
-├── .github/workflows/ci.yml  # اجرای تست‌ها و کنترل‌ها در هر push
+│   └── test_checks.py        # Tests for the checks
+├── .github/workflows/ci.yml  # Runs tests and checks on every push
 ├── requirements.txt
-├── SETUP.md                  # راهنمای نصب
+├── SETUP.md                  # Setup guide
 └── README.md
 ```
 
-## راه‌اندازی
+## Setup
 
-راهنمای کامل در `SETUP.md` است. خلاصه:
+See `SETUP.md` for the full guide. In short:
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # در ویندوز: .venv\Scripts\Activate.ps1
+source .venv/bin/activate        # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 ```
 
-## اجرا
+## Running
 
-اجرای همهٔ کنترل‌ها روی داده ساختگی:
+Run all checks on the sample data:
 
 ```bash
 python -m qa.run_all_checks
 ```
 
-برای استفاده در pipeline واقعی، با پرچم `--strict` اجرا کنید تا در صورت وجود خطا کد خروج ۱ برگردد:
+To fail with exit code 1 when any check fails (for use in a real pipeline):
 
 ```bash
 python -m qa.run_all_checks --strict
 ```
 
-اجرای تست‌ها:
+Run the tests:
 
 ```bash
 pytest tests/ -v
 ```
 
-## نتیجهٔ نمونه
+## Sample Results
 
-روی فایل ساختگی، ۷ کنترل FAIL و ۲ کنترل PASS می‌دهند. هر FAIL به یک خطای عمدی در `data/raw/workday_worker_extract.csv` مربوط است. جزئیات در `data/README.md` آمده است.
+On the sample file, 7 checks FAIL and 2 PASS. Each FAIL matches an intentional defect in `data/raw/workday_worker_extract.csv`. Details are in `data/README.md`.
 
-## مراحل بعدی
+## Next Steps
 
-- داشبورد Power BI روی خروجی‌های CSV در `qa/results/`
-- افزودن کنترل freshness و volume
-- اتصال به Microsoft Fabric Lakehouse یا Databricks
-- زمان‌بندی اجرا با Airflow
+- Power BI dashboard on the CSV results in `qa/results/`
+- Freshness and volume checks
+- Connection to Microsoft Fabric Lakehouse or Databricks
+- Scheduling with Airflow
