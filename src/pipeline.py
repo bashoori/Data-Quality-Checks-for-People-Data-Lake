@@ -1,4 +1,4 @@
-"""ساخت لایه‌های Bronze، Silver و Gold روی DuckDB."""
+"""Build the Bronze, Silver, and Gold layers on DuckDB."""
 from pathlib import Path
 
 import duckdb
@@ -7,16 +7,16 @@ from src.config import RAW_FILE
 
 
 def build_layers(con: duckdb.DuckDBPyConnection, raw_file: str | Path = RAW_FILE) -> None:
-    """داده خام را در سه لایه بار می‌کند."""
+    """Load the raw extract into three layers."""
     raw_path = Path(raw_file).as_posix()
 
-    # Bronze: داده خام، همه ستون‌ها به صورت متن
+    # Bronze: raw data, all columns kept as text
     con.execute(
         f"CREATE OR REPLACE TABLE bronze_workday AS "
         f"SELECT * FROM read_csv('{raw_path}', all_varchar = true)"
     )
 
-    # Silver: نوع‌های درست و مقادیر خالی یکدست
+    # Silver: correct data types and consistent empty values
     con.execute(
         """
         CREATE OR REPLACE TABLE silver_worker AS
@@ -35,7 +35,7 @@ def build_layers(con: duckdb.DuckDBPyConnection, raw_file: str | Path = RAW_FILE
         """
     )
 
-    # Gold: آخرین وضعیت هر کارمند، یک ردیف برای هر کارمند
+    # Gold: latest state of each worker, one row per worker
     con.execute(
         """
         CREATE OR REPLACE TABLE gold_worker_current AS

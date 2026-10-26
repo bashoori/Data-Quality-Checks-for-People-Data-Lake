@@ -1,43 +1,43 @@
 # QA Playbook
 
-این سند روش تست و کار تیم QA را برای People Data Lake توضیح می‌دهد.
+This document describes the testing process and the QA team's workflow for the People Data Lake.
 
-## ۱. قبل از هر release
+## 1. Before Each Release
 
-1. دامنهٔ تغییر را مشخص کن: منبع جدید، تغییر منطق تبدیل، یا داشبورد جدید.
-2. source-to-target mapping را به‌روز کن (`docs/source_to_target.md`).
-3. قوانین کسب‌وکار تازه را در `docs/business_rules.md` ثبت کن.
-4. کنترل‌های مرتبط را در `qa/checks.py` اضافه یا به‌روز کن.
+1. Define the scope of the change: a new source, a change in transformation logic, or a new dashboard.
+2. Update the source-to-target mapping (`docs/source_to_target.md`).
+3. Record any new business rules in `docs/business_rules.md`.
+4. Add or update the related checks in `qa/checks.py`.
 
-## ۲. اجرای تست
+## 2. Running the Tests
 
 ```bash
 python -m qa.run_all_checks --strict
 pytest tests/ -v
 ```
 
-- هر FAIL باید یا رفع شود یا در `defect_log.md` با توضیح ثبت شود.
-- خروجی CSV در `qa/results/` باید به عنوان شواهد (evidence) برای release نگه داشته شود.
+- Each FAIL must either be fixed or recorded in `defect_log.md` with an explanation.
+- The CSV output in `qa/results/` must be kept as release evidence.
 
-## ۳. Triage برای defectها
+## 3. Defect Triage
 
-| شدت | تعریف | زمان پاسخ |
+| Severity | Definition | Response time |
 |---|---|---|
-| بحرانی | گزارش مدیریتی غلط است یا داده حساس ماسک نشده | همان روز |
-| بالا | کنترل reconciliation یا effective dating شکست خورده | ۲ روز کاری |
-| متوسط | کامل نبودن فیلد غیرحیاتی | ۵ روز کاری |
-| پایین | مشکل مستندسازی یا نام‌گذاری | در نسخهٔ بعدی |
+| Critical | A management report is wrong, or sensitive data is not masked | Same day |
+| High | A reconciliation or effective dating check fails | 2 business days |
+| Medium | A non-critical field is incomplete | 5 business days |
+| Low | A documentation or naming issue | Next version |
 
-## ۴. گزارش وضعیت
+## 4. Status Report
 
-هر release با این موارد بسته می‌شود:
-- تعداد PASS و FAIL
-- لیست defectهای باز
-- توصیهٔ go یا no-go با دلیل
+Each release is closed with:
+- Number of PASS and FAIL results
+- List of open defects
+- A go or no-go recommendation, with the reason
 
-## ۵. افزودن کنترل جدید
+## 5. Adding a New Check
 
-1. کنترل را در `qa/checks.py` با یک نام واضح و توضیح فارسی اضافه کن.
-2. یک داده ساختگی که آن خطا را دارد به `data/raw/` اضافه کن و در `data/README.md` ثبت کن.
-3. تست را در `tests/test_checks.py` بنویس.
-4. کنترل را در `README.md` در جدول کنترل‌ها اضافه کن.
+1. Add the check to `qa/checks.py` with a clear name and a short description.
+2. Add sample data that contains the defect to `data/raw/`, and document it in `data/README.md`.
+3. Write a test in `tests/test_checks.py`.
+4. Add the check to the checks table in `README.md`.

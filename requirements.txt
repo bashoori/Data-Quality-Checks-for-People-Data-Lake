@@ -1,18 +1,18 @@
-# حداقل ابزارهای لازم برای شروع پروژه People Data Lake QA
-# نسخه‌ها را می‌توانید بعداً به‌روز کنید.
+# Minimum dependencies for the Data Quality Checks for People Data Lake project.
+# You can update the versions later.
 
-# پردازش داده
+# Data processing
 pandas>=2.0
-openpyxl>=3.1        # خواندن و نوشتن فایل‌های Excel
+openpyxl>=3.1        # Read and write Excel files
 
-# موتور SQL محلی (برای اجرای کوئری‌های QA بدون نیاز به سرور)
+# Local SQL engine (runs QA queries without a server)
 duckdb>=1.0
 
-# تست
+# Testing
 pytest>=8.0
 
-# ابزارهای اختیاری (بعد از راه‌اندازی اولیه فعال کنید)
-# pyspark>=3.5            # برای نسخهٔ مقیاس‌پذیر روی Spark
-# great-expectations>=1.0 # برای تعریف چک‌های کیفیت داده به‌صورت اعلانی
-# dbt-core>=1.8           # برای dbt tests
-# apache-airflow>=2.9     # برای زمان‌بندی اجرای تست‌ها
+# Optional tools (enable after the initial setup)
+# pyspark>=3.5            # Scalable version on Spark
+# great-expectations>=1.0 # Declarative data quality checks
+# dbt-core>=1.8           # dbt tests
+# apache-airflow>=2.9     # Scheduling check runs

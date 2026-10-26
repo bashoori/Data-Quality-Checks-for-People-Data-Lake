@@ -1,4 +1,4 @@
-"""مسیرها و تنظیمات پروژه."""
+"""Project paths and settings."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]

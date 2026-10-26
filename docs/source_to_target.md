@@ -1,20 +1,20 @@
-# نگاشت Source به Target
+# Source-to-Target Mapping
 
-| فیلد منبع (Workday) | Bronze | Silver | Gold | قانون یا تبدیل |
+| Source field (Workday) | Bronze | Silver | Gold | Rule or transformation |
 |---|---|---|---|---|
-| worker_id | `worker_id` | `worker_id` | `worker_id` | کلید کارمند، الزامی |
-| worker_status | `worker_status` | `worker_status` | `worker_status` | بدون تغییر |
-| effective_date | `effective_date` (متن) | `effective_date` (DATE) | `effective_date` | تبدیل به DATE |
-| end_date | `end_date` (متن) | `end_date` (DATE) | `end_date` | تبدیل به DATE، ۹۹۹۹-۱۲-۳۱ یعنی بدون پایان |
-| job_code | `job_code` (متن) | `job_code` | `job_code` | رشتهٔ خالی به NULL |
-| manager_id | `manager_id` (متن) | `manager_id` | `manager_id` | رشتهٔ خالی به NULL |
-| location | `location` | `location` | `location` | بدون تغییر |
-| hire_date | `hire_date` (متن) | `hire_date` (DATE) | `hire_date` | رشتهٔ خالی به NULL |
-| work_email | `work_email` | `work_email` | حذف شود | در لایهٔ Gold نباید باشد |
-| sin_masked | `sin_masked` | `sin_masked` | `sin_masked` | باید به شکل ***-***-NNN باشد |
+| worker_id | `worker_id` | `worker_id` | `worker_id` | Worker key, required |
+| worker_status | `worker_status` | `worker_status` | `worker_status` | No change |
+| effective_date | `effective_date` (text) | `effective_date` (DATE) | `effective_date` | Cast to DATE |
+| end_date | `end_date` (text) | `end_date` (DATE) | `end_date` | Cast to DATE. 9999-12-31 means no end date |
+| job_code | `job_code` (text) | `job_code` | `job_code` | Empty string becomes NULL |
+| manager_id | `manager_id` (text) | `manager_id` | `manager_id` | Empty string becomes NULL |
+| location | `location` | `location` | `location` | No change |
+| hire_date | `hire_date` (text) | `hire_date` (DATE) | `hire_date` | Empty string becomes NULL |
+| work_email | `work_email` | `work_email` | Removed | Must not appear in the Gold layer |
+| sin_masked | `sin_masked` | `sin_masked` | `sin_masked` | Must be masked as ***-***-NNN |
 
-## قوانین عمومی
+## General Rules
 
-- Bronze هیچ تغییری ندارد. هر تبدیل فقط در Silver انجام می‌شود.
-- Gold فقط آخرین رکورد هر کارمند بر اساس `effective_date` را نگه می‌دارد.
-- هر ستونی که به Gold می‌رسد باید در گزارش‌ها هم قابل استفاده باشد. ستون‌های حساس باید ماسک شده باشند.
+- Bronze is never changed. All transformations happen in Silver.
+- Gold keeps only the latest record per worker, based on `effective_date`.
+- Every column that reaches Gold must be safe to use in reports. Sensitive columns must be masked.

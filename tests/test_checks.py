@@ -1,4 +1,4 @@
-"""تست‌های کنترل‌ها روی داده ساختگی با خطاهای شناخته‌شده."""
+"""Tests for the checks, using sample data with known defects."""
 import duckdb
 import pytest
 
@@ -45,7 +45,7 @@ def test_every_check_is_covered(results):
 
 
 def test_clean_worker_is_not_flagged(results):
-    # W1002 داده سالم است و نباید در خطاهای overlapping یا duplicate دیده شود
+    # W1002 is valid data and should not appear in overlap or duplicate violations
     con = duckdb.connect()
     build_layers(con)
     rows = con.sql(

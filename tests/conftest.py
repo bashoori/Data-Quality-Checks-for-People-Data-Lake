@@ -1,4 +1,4 @@
-"""اضافه کردن ریشهٔ پروژه به مسیر importها برای pytest."""
+"""Add the project root to the import path for pytest."""
 import sys
 from pathlib import Path
 

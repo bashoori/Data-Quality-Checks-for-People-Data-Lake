@@ -1,21 +1,21 @@
-# داده ساختگی Workday
+# Synthetic Workday Data
 
-فایل `raw/workday_worker_extract.csv` داده‌ای ساختگی است که عمداً خطا دارد. هدف این است که کنترل‌های QA باید این خطاها را پیدا کنند.
+The file `raw/workday_worker_extract.csv` is synthetic data with intentional defects. The QA checks should detect these defects.
 
-## خطاهای عمدی
+## Intentional Defects
 
-| کارمند | خطا | کنترلی که باید آن را پیدا کند |
+| Worker | Defect | Check that should catch it |
 |---|---|---|
-| W1002 | دو رکورد با بازه‌های متوالی (سالم است، نمونهٔ درست) | بدون خطا |
-| W1003 | `manager_id` برابر `W9999` است و وجود ندارد | `orphan_manager` |
-| W1003 | `hire_date` خالی است | `missing_hire_date` |
-| W1005 | بازه‌های مؤثر روی هم می‌افتند | `overlapping_effective_periods` |
-| W1006 | `end_date` قبل از `effective_date` است | `end_before_start` |
-| W1007 | در یکی از دو رکورد `job_code` خالی است | `missing_job_code` |
-| W1007 | دو رکورد با تاریخ مؤثر یکسان | `duplicate_worker_effective_date` |
-| W1004 | `sin_masked` ماسک نشده و عدد کامل است | `sin_not_masked` |
+| W1002 | Two records with consecutive periods (valid, a good example) | None (no defect) |
+| W1003 | `manager_id` is `W9999`, which does not exist | `orphan_manager` |
+| W1003 | `hire_date` is empty | `missing_hire_date` |
+| W1005 | Effective periods overlap | `overlapping_effective_periods` |
+| W1006 | `end_date` is before `effective_date` | `end_before_start` |
+| W1007 | `job_code` is empty in one of the two records | `missing_job_code` |
+| W1007 | Two records with the same effective date | `duplicate_worker_effective_date` |
+| W1004 | `sin_masked` is not masked and shows the full number | `sin_not_masked` |
 
-## نکته
+## Notes
 
-- نمونهٔ W1002 عمداً سالم گذاشته شده تا نشان دهد کنترل‌ها خطای مثبت (false positive) ندارند.
-- شمارهٔ بیمه اجتماعی در این فایل ساختگی است و به هیچ شخص واقعی مربوط نیست.
+- W1002 is intentionally valid, to show that the checks do not produce false positives.
+- The Social Insurance Number values in this file are fictional and do not belong to any real person.

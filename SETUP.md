@@ -1,83 +1,77 @@
-# راهنمای نصب و راه‌اندازی
+# Setup Guide
 
-این راهنما محیط اولیهٔ پروژه Data Quality Checks for People Data Lake را آماده می‌کند. زمان لازم: حدود ۱۵ دقیقه.
+This guide prepares the local environment for the Data Quality Checks for People Data Lake project. Estimated time: about 15 minutes.
 
-## پیش‌نیازها
+## Prerequisites
 
-- **Python 3.10 یا بالاتر**
-  - بررسی نسخه: `python --version` یا `python3 --version`
-  - دانلود: https://www.python.org/downloads/
-- **Git** (اختیاری، برای کار با GitHub)
-- **Power BI Desktop** (فقط ویندوز، برای ساخت داشبورد QA)
-  - دانلود: از Microsoft Store یا https://powerbi.microsoft.com/desktop/
+- **Python 3.10 or higher**
+  - Check your version: `python --version` or `python3 --version`
+  - Download: https://www.python.org/downloads/
+- **Git** (optional, for working with GitHub)
+- **Power BI Desktop** (Windows only, for building the QA dashboard later)
+  - Download: Microsoft Store or https://powerbi.microsoft.com/desktop/
 
-## ۱. ساخت محیط مجازی
+## 1. Create a Virtual Environment
 
-محیط مجازی باعث می‌شود وابستگی‌های این پروژه با بقیهٔ پروژه‌های شما تداخل نداشته باشند.
+A virtual environment keeps this project's dependencies separate from your other projects.
 
 **Windows (PowerShell):**
 ```powershell
-cd people-data-lake-qa
+cd data-quality-checks-for-people-data-lake
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
 
-**macOS و Linux:**
+**macOS and Linux:**
 ```bash
-cd people-data-lake-qa
+cd data-quality-checks-for-people-data-lake
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-اگر فعال‌سازی انجام شده باشد، ابتدای خط فرمان `(.venv)` نمایش داده می‌شود.
+When activated, the prompt starts with `(.venv)`.
 
-> اگر در PowerShell خطای اجازه دیدید، این دستور را یک‌بار اجرا کنید:
+> If PowerShell blocks the activation script, run this once:
 > `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`
 
-## ۲. نصب وابستگی‌ها
+## 2. Install Dependencies
 
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## ۳. بررسی نصب
-
-یک فایل کوچک برای تست بسازید یا این دستور را در ترمینال اجرا کنید:
+## 3. Verify the Installation
 
 ```bash
 python -c "import pandas, duckdb, pytest, openpyxl; print('pandas', pandas.__version__); print('duckdb', duckdb.__version__); print('pytest', pytest.__version__); print('openpyxl', openpyxl.__version__)"
 ```
 
-اگر چهار نسخه نمایش داده شدند، نصب کامل است.
+If all four versions are printed, the installation is complete.
 
-## ۴. تست اولیهٔ SQL روی DuckDB
-
-این تست نشان می‌دهد که موتور SQL محلی کار می‌کند:
+## 4. Test DuckDB
 
 ```bash
 python -c "import duckdb; print(duckdb.sql('SELECT 1 AS ok').fetchall())"
 ```
 
-خروجی باید `[(1,)]` باشد.
+The output should be `[(1,)]`.
 
-## ۵. اجرای تست‌ها
-
-بعد از اینکه تست‌های پروژه نوشته شدند، با این دستور اجرا کنید:
+## 5. Run the Tests
 
 ```bash
 pytest tests/ -v
 ```
 
-## عیب‌یابی سریع
+## Troubleshooting
 
-| مشکل | راه‌حل |
+| Problem | Solution |
 |---|---|
-| `python` پیدا نمی‌شود | از `python3` استفاده کنید یا Python را دوباره نصب کنید و گزینهٔ Add to PATH را فعال کنید. |
-| `pip` قدیمی است | `python -m pip install --upgrade pip` |
-| خطا در نصب `duckdb` | نسخهٔ Python را بررسی کنید (باید ۳.۱۰ یا بالاتر باشد). |
-| `Activate.ps1` اجرا نمی‌شود | دستور `Set-ExecutionPolicy` را در بخش ۱ اجرا کنید. |
+| `python` not found | Use `python3`, or reinstall Python and enable "Add to PATH". |
+| `pip` is outdated | `python -m pip install --upgrade pip` |
+| `duckdb` fails to install | Check your Python version (must be 3.10 or higher). |
+| `Activate.ps1` will not run | Run the `Set-ExecutionPolicy` command in step 1. |
 
-## یادداشت دربارهٔ داده
+## Note on Data
 
-این پروژه فقط با **داده ساختگی** کار می‌کند. هیچ داده واقعی کارکنان را در ریپو قرار ندهید، حتی برای تست.
+This project works only with **synthetic data**. Never place real employee data in the repository, even for testing.

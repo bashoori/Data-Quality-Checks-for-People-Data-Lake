@@ -1,6 +1,6 @@
-"""نقطهٔ ورود اجرای همهٔ کنترل‌های کیفیت.
+"""Entry point for running all data quality checks.
 
-اجرا از ریشهٔ پروژه:
+Run from the project root:
     python -m qa.run_all_checks
     python -m qa.run_all_checks --strict
 """
@@ -17,12 +17,12 @@ from src.pipeline import build_layers
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="اجرای کنترل‌های کیفیت People Data Lake")
-    parser.add_argument("--raw-file", default=str(RAW_FILE), help="مسیر فایل خروجی Workday")
+    parser = argparse.ArgumentParser(description="Run data quality checks for the People Data Lake")
+    parser.add_argument("--raw-file", default=str(RAW_FILE), help="Path to the Workday extract")
     parser.add_argument(
         "--strict",
         action="store_true",
-        help="اگر حداقل یک کنترل FAIL شد، کد خروج ۱ برگردد",
+        help="Exit with code 1 if at least one check fails",
     )
     args = parser.parse_args(argv)
 
@@ -42,7 +42,7 @@ def main(argv: list[str] | None = None) -> int:
 
     failed = [r for r in results if r["status"] == "FAIL"]
     print(f"\n{len(results) - len(failed)} PASS, {len(failed)} FAIL")
-    print(f"نتیجه ذخیره شد در: {output}")
+    print(f"Results saved to: {output}")
 
     return 1 if (args.strict and failed) else 0
 

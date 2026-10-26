@@ -1,7 +1,7 @@
-"""کنترل‌های کیفیت داده برای لایه‌های People Data Lake.
+"""Data quality checks for the People Data Lake layers.
 
-هر کنترل یک کوئری دارد که ردیف‌های خطادار را برمی‌گرداند.
-اگر کوئری هیچ ردیفی برنگرداند، کنترل PASS است.
+Each check has a query that returns the rows that violate it.
+If the query returns no rows, the check is PASS.
 """
 from dataclasses import dataclass
 
@@ -18,7 +18,7 @@ class Check:
 CHECKS: list[Check] = [
     Check(
         name="reconciliation_row_count",
-        description="تعداد ردیف Bronze و Silver باید برابر باشد",
+        description="Bronze and Silver must have the same number of rows",
         violations_sql="""
             SELECT b.n AS bronze_rows, s.n AS silver_rows
             FROM (SELECT COUNT(*) AS n FROM bronze_workday) b,
@@ -28,7 +28,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="duplicate_worker_effective_date",
-        description="یک کارمند برای یک تاریخ مؤثر نباید بیش از یک رکورد داشته باشد",
+        description="A worker must not have more than one record for the same effective date",
         violations_sql="""
             SELECT worker_id, effective_date, COUNT(*) AS occurrences
             FROM silver_worker
@@ -38,7 +38,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="overlapping_effective_periods",
-        description="بازه‌های مؤثر یک کارمند نباید روی هم بیفتند",
+        description="A worker's effective periods must not overlap",
         violations_sql="""
             SELECT a.worker_id,
                    a.effective_date,
@@ -53,7 +53,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="end_before_start",
-        description="تاریخ پایان نباید قبل از تاریخ شروع باشد",
+        description="End date must not be earlier than the start date",
         violations_sql="""
             SELECT worker_id, effective_date, end_date
             FROM silver_worker
@@ -62,7 +62,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="missing_hire_date",
-        description="تاریخ استخدام نباید خالی باشد",
+        description="Hire date must not be empty",
         violations_sql="""
             SELECT worker_id, effective_date
             FROM silver_worker
@@ -71,7 +71,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="missing_job_code",
-        description="کد شغل نباید خالی باشد",
+        description="Job code must not be empty",
         violations_sql="""
             SELECT worker_id, effective_date
             FROM silver_worker
@@ -80,7 +80,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="orphan_manager",
-        description="مدیر ثبت‌شده باید در فایل به عنوان کارمند وجود داشته باشد",
+        description="The manager ID must exist as a worker in the file",
         violations_sql="""
             SELECT worker_id, manager_id
             FROM silver_worker
@@ -90,7 +90,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="sin_not_masked",
-        description="شمارهٔ بیمه اجتماعی باید به شکل ***-***-NNN ماسک شده باشد",
+        description="Social Insurance Number must be masked as ***-***-NNN",
         violations_sql=r"""
             SELECT worker_id, sin_masked
             FROM silver_worker
@@ -99,7 +99,7 @@ CHECKS: list[Check] = [
     ),
     Check(
         name="gold_one_row_per_worker",
-        description="در لایهٔ Gold هر کارمند فقط یک ردیف داشته باشد",
+        description="The Gold layer must have exactly one row per worker",
         violations_sql="""
             SELECT worker_id, COUNT(*) AS rows_in_gold
             FROM gold_worker_current
@@ -111,7 +111,7 @@ CHECKS: list[Check] = [
 
 
 def run_checks(con: duckdb.DuckDBPyConnection) -> list[dict]:
-    """همه کنترل‌ها را اجرا و نتیجه هر کدام را برمی‌گرداند."""
+    """Run all checks and return the result of each one."""
     results = []
     for check in CHECKS:
         relation = con.sql(check.violations_sql)
